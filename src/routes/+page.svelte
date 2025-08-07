@@ -2,6 +2,6 @@
     import Input from "../components/Input.svelte";
 </script>
 
-<div id="inputDiv" class="flex justify-center align-middle min-w-full">
+<div id="inputDivOuter" class="flex justify-center items-center min-w-full min-h-screen">
     <Input />
 </div>

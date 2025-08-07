@@ -2,6 +2,7 @@
 
 :root {
     font: system-ui;
+    overflow: hidden;
 }
 
 h1 {
