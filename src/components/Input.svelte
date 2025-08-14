@@ -1,6 +1,8 @@
 <script lang="ts">
     import Icon from "./Icon.svelte";
     import { userFirstName } from "../store";
+    import { goto } from '$app/navigation';
+
 
     let name = $state('')
     let errorMessage = $state('')
@@ -10,31 +12,34 @@
     }
 
     export function capitaliseFirstLetter(str: string) {
+        const trimmed = str.trim();
 
-        const trimmed = str.trim()
-
-        if (!str) displayError('Unforseen error occured. variable str in capitaliseFirstLetter is undefined.') // just in case
+        if (!str) {
+            displayError('Unforeseen error occurred. variable str in capitaliseFirstLetter is undefined.');
+            return;
+        }
 
         if (trimmed === '') {
-            displayError('Please enter a name')
-            return
+            displayError('Please enter a name');
+            return;
         }
-        
-        // Check if name contains only letters and spaces, using regex
+
+        // name must only contain letters and spaces
         if (!/^[a-zA-Z\s]+$/.test(trimmed)) {
-            displayError('Name should only contain letters and spaces.')
-            return
+            displayError('Name should only contain letters and spaces.');
+            return;
         }
-        
-        // Clear any previous error
-        errorMessage = ''
-        
-        if (/^[a-z]/.test(trimmed)) { // first letter is lowercase?
-            const capitalisedFirstLetter = trimmed.at(0)?.toUpperCase() // capitalise first letter
-            
-            $userFirstName = capitaliseFirstLetter + trimmed.slice(1) // global variable to sture userfirstname
-        }
+
+        // clear any previous error
+        errorMessage = '';
+
+        const capitalisedFirstLetter = trimmed.at(0)?.toUpperCase();
+        $userFirstName = capitalisedFirstLetter + trimmed.slice(1);
+
+        // Navigate to next step
+        goto('/packageinfo')
     }
+
 
     function handleKeydown(event: KeyboardEvent) {
         if (event.key === 'Enter') {
@@ -43,34 +48,25 @@
     }
 </script>
 
-<div id="inputDiv" class="flex flex-col justify-center items-center border rounded-lg p-20 border-gray-500 shadow-sm shadow-black">
-    <div id="innerinputdiv" class="flex flex-col items-center">
-        <span class="pb-10">Please type your first name.</span>
-        <input
-            id="name"
-            bind:value={name}
-            type="text"
-            placeholder="Type your name here..."
-            class="border border-gray-400 p-2 rounded top-3"
-            onkeydown={handleKeydown}
-        />
-    </div>
-    <div id="errorDiv">
-        {#if errorMessage}
-            <div id="innerErrorDiv" class="text-red-500 mt-2">
-                <span>
-                    <Icon id="errorIcon" name="warnTriangle" />
-                </span>
-                {errorMessage}
-            </div>
-        {/if}
-    </div>
+<div id="innerinputdiv" class="flex flex-col items-center">
+    <span class="pb-10">Please type your first name.</span>
+    <input
+        id="name"
+        bind:value={name}
+        type="text"
+        placeholder="Type your name here..."
+        class="border border-gray-400 p-2 rounded top-3"
+        onkeydown={handleKeydown}
+    />
+</div>
+<div id="errorDiv">
+    {#if errorMessage}
+        <div id="innerErrorDiv" class="text-red-500 mt-2 flex">
+            <span>
+                <Icon id="errorIcon" name="warnTriangle" />
+            </span>
+            {errorMessage}
+        </div>
+    {/if}
 </div>
 
-<style>
-#inputDiv {
-    position: relative;
-    height: 300px;
-    top: 300px;
-}
-</style>
