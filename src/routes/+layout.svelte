@@ -18,16 +18,21 @@
         <h1>ONLINZ Returns</h1>
     </div>
 
-    <div id="inputDiv" class="flex flex-col justify-center items-center border rounded-lg p-20 border-gray-500 shadow-sm shadow-black max-w-3xl">
-        {@render children()}
-    </div>
+    <main id="mainwindow" class="flex flex-col min-h-screen justify-center ">
 
-    {#if page.url.pathname !== "/"}
-        <!-- Back button -->
-        <button onclick={goBack} class="mb-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
-            ← Back
-        </button>
-    {/if}
+        <div id="inputDiv" class="flex flex-col justify-center items-center border rounded-lg p-20 border-gray-500 shadow-sm shadow-black max-w-3xl">
+            {@render children()}
+        </div>
+
+        {#if page.url.pathname !== "/"}
+            <!-- Back button -->
+            <button id="backButton" onclick={goBack} class="m-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 dark:hover:bg-slate-500 dark:bg-slate-700">
+                ← Back
+            </button>
+        {/if}
+
+    </main>
+    
 
 </div>
 
@@ -37,18 +42,17 @@
         min-height: 100vh;
     }
 
-    :global(body) {
+    :global(html) {
         background-color: #f2eee2;
         color: #0084f6;
         transition: background-color 0.3s
     }
-    :global(body.dark-mode) {
+    :global(html.dark) {
         background-color: #181818;
         color: #bfc2c7;
     }
 
-    #inputDiv {
-        position: relative;
-        top: 300px;
+    #backButton {
+        width: 10em;
     }
 </style>
