@@ -31,5 +31,8 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
+	},
+	"dependencies": {
+		"vitest": "^3.2.4"
 	}
 }
