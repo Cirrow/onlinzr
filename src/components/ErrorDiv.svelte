@@ -1,5 +1,5 @@
 <script>
-    let { errorMessage } = $props()
+    import { errorMessage } from "../store";
     import Icon from "./Icon.svelte";
 </script>
 
@@ -8,6 +8,6 @@
             <span>
                 <Icon id="errorIcon" name="warnTriangle" />
             </span>
-            {errorMessage}
+            {$errorMessage}
         </div>
 </div>
