@@ -15,4 +15,4 @@ export interface ReturnPackage {
 }
 
 
-export const pack = writable<ReturnPackage>({ height: "", width: "", depth: "", volume: 0}) //the name "package" is taken in strict mode
+export const box = writable<ReturnPackage>({ height: "", width: "", depth: "", volume: 0})
