@@ -1,4 +1,4 @@
-import { errorMessage, userFirstName, pack } from "../store";
+import { errorMessage, userFirstName, pack, type ReturnPackage } from "../store";
 import { displayError } from "$lib/helper";
 
 export function capitaliseFirstLetter(name: string): boolean {
@@ -30,11 +30,11 @@ export function capitaliseFirstLetter(name: string): boolean {
 }
 
 
-export function validateDimensions({ heightInput, widthInput, depthInput }: { heightInput: string; widthInput: string; depthInput: string }): boolean {
+export function validateDimensions({ height, width, depth }: ReturnPackage): boolean {
 
-    let h = heightInput.trim();
-    let w = widthInput.trim();
-    let d = depthInput.trim();
+    let h = height.trim();
+    let w = width.trim();
+    let d = depth.trim();
 
     if (h === "" || w === "" || d === "") {
         errorMessage.set(displayError('Dimensions must not be blank.'))
