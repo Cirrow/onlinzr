@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { userFirstName, box } from "../store";
+    import { userFirstName, boxDim } from "../../store";
 </script>
 
 
@@ -9,7 +9,7 @@
 
     <input
         id="heightInput"
-        bind:value={$box.height}
+        bind:value={$boxDim.height}
         type="text"
         placeholder="Enter the height here..."
         class="border border-gray-400 p-2 rounded top-3 mb-4"
@@ -17,7 +17,7 @@
 
     <input
         id="widthInput"
-        bind:value={$box.width}
+        bind:value={$boxDim.width}
         type="text"
         placeholder="Enter the width here..."
         class="border border-gray-400 p-2 rounded top-3 mb-4"
@@ -25,7 +25,7 @@
 
     <input
         id="depthInput"
-        bind:value={$box.depth}
+        bind:value={$boxDim.depth}
         type="text"
         placeholder="Enter the depth here..."
         class="border border-gray-400 p-2 rounded top-3 mb-4"

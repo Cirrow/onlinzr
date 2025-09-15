@@ -11,8 +11,8 @@ export interface ReturnPackage {
     height: string,
     width: string,
     depth: string,
-    volume: number
 }
 
 
-export const box = writable<ReturnPackage>({ height: "", width: "", depth: "", volume: 0})
+export const boxDim = writable<ReturnPackage>({ height: "", width: "", depth: "" })
+export const boxVol = writable(0)

@@ -1,16 +1,19 @@
 <script lang="ts">
-    import { errorMessage } from "../store";
-    import { capitaliseFirstLetter } from "$lib/validation";
+    import { errorMessage, boxDim, userFirstName } from "../store";
+    import { capitaliseFirstLetter, validateDimensions } from "$lib/validation";
 
     import ErrorDiv from "../components/ErrorDiv.svelte";
-    import Dimensions from "../components/Dimensions.svelte";
-    import NameInput from "../components/NameInput.svelte";
+
+    import Dimensions from "../components/steps/Dimensions.svelte";
+    import NameInput from "../components/steps/NameInput.svelte";
+    import Island from "../components/steps/Island.svelte";
 
     let currentStep = $state(1);
 
     const steps = [
-        { no: 1, id: "name",       component: NameInput, checkFn: capitaliseFirstLetter },
+        { no: 1, id: "name",       component: NameInput },
         { no: 2, id: "dimensions", component: Dimensions },
+        { no: 3, id: "island",     component: Island}
     ]; // individual components to be swapped out as the steps (procedure for return) increment
     const totalSteps = steps.length;
 
@@ -24,6 +27,7 @@
     export function prevStep(): void {
         if (currentStep > 1) {
             currentStep--;
+            errorMessage.set("")
         }
     }
 
@@ -33,11 +37,18 @@
         }
     }
 
+    
     function canProceed(step: number): boolean {
-        const stepConfig = steps[step - 1]; // because steps array is 0-indexed
-        if (stepConfig?.checkFn) {
-            return stepConfig.checkFn();
-        }
+        const stepConfig = steps[step - 1];
+        
+        // Handle each step case explicitly with proper typing
+        if (step === 1) { // name step
+            const nameInput = $userFirstName;
+            return capitaliseFirstLetter(nameInput);
+        } else if (step === 2) { // dimensions step  
+            const packInput = $boxDim;
+            return validateDimensions(packInput);
+        }    
         return true;
     }
 
@@ -63,7 +74,7 @@
     {#if (currentStep !== 1)}
         <button onclick={prevStep}>Back</button>
     {/if}
-    <button onclick={nextStep} disabled={currentStep === totalSteps} class="p-3 rounded-md bg-blue-100">
+    <button onclick={nextStep}  class="p-3 rounded-md bg-blue-100">
         Next
     </button>
 </div>
