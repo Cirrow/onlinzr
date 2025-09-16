@@ -1,5 +1,7 @@
-import { errorMessage, userFirstName, pack, type ReturnPackage } from "../store";
-import { displayError } from "$lib/helper";
+// boolean functions to validate the user inputs, and setting the global variables
+
+import { errorMessage, userFirstName, boxDim, boxVol, type ReturnPackage } from "../store";
+import { calculateBaseRate, displayError } from "$lib/helper";
 
 export function capitaliseFirstLetter(name: string): boolean {
     let str = name
@@ -39,8 +41,8 @@ export function validateDimensions({ height, width, depth }: ReturnPackage): boo
     if (h === "" || w === "" || d === "") {
         errorMessage.set(displayError('Dimensions must not be blank.'))
         return false // blank check
-    
     }
+
     h = h.toLowerCase()
     w = w.toLowerCase()
     d = d.toLowerCase()
@@ -50,8 +52,20 @@ export function validateDimensions({ height, width, depth }: ReturnPackage): boo
         return false
     }
 
-    if ( [h, w, d].every( v => v.endsWith("cm") && !Number.isNaN(Number(v.slice(0, -2))) ) ) { // ends with cm and is a valid number
-        
+    if ([h, w, d].every(v => !Number.isNaN(Number(v.endsWith("cm") ? v.slice(0, -2) : v)))) { // valid dimension, with or without "cm"?
+        [h, w, d] = [h, w, d].map(v => v.slice(0, -2))
+        const [hnum, wnum, dnum] = [h, w, d].map(Number)
+
+        if (hnum < 5 || wnum < 5 || dnum < 5) errorMessage.set(displayError('All dimensions must not be smaller than 5cm.'))
+        if (hnum > 100 || wnum > 100 || dnum > 100) errorMessage.set(displayError('All dimensions must not exceed 100cm.'))
+
+
+        const newDim: ReturnPackage = { height: h, width: w, depth: d }
+        boxDim.set(newDim)
+
+        const volume = calculateBaseRate(hnum, wnum, dnum)
+        boxVol.set(volume) // set volume global storage
+
         return true
     }
 
