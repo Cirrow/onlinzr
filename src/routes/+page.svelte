@@ -1,25 +1,28 @@
 <script lang="ts">
-    import { errorMessage, boxDim, userFirstName } from "../store";
-    import { capitaliseFirstLetter, validateDimensions } from "$lib/validation";
+    import { errorMessage, boxDim, userFirstName, fromIsland } from "../store";
+    import { alterBaseRate, capitaliseFirstLetter, validateDimensions } from "$lib/validation";
 
     import ErrorDiv from "../components/ErrorDiv.svelte";
 
     import Dimensions from "../components/steps/Dimensions.svelte";
     import NameInput from "../components/steps/NameInput.svelte";
     import Island from "../components/steps/Island.svelte";
+    import Details from "../components/steps/Details.svelte";
 
     let currentStep = $state(1);
 
     const steps = [
         { no: 1, id: "name",       component: NameInput },
         { no: 2, id: "dimensions", component: Dimensions },
-        { no: 3, id: "island",     component: Island}
+        { no: 3, id: "island",     component: Island},
+        { no: 4, id: "details",    component: Details}
     ]; // individual components to be swapped out as the steps (procedure for return) increment
     const totalSteps = steps.length;
 
     // --- helper navigation functions ---
     export function nextStep(): void {
         if (currentStep < totalSteps && canProceed(currentStep)) {
+            errorMessage.set("")
             currentStep++;
         }
     }
@@ -39,7 +42,6 @@
 
     
     function canProceed(step: number): boolean {
-        const stepConfig = steps[step - 1];
         
         // Handle each step case explicitly with proper typing
         if (step === 1) { // name step
@@ -48,15 +50,13 @@
         } else if (step === 2) { // dimensions step  
             const packInput = $boxDim;
             return validateDimensions(packInput);
-        }    
-        return true;
-    }
+        } else if (step === 3) {
+            const island = $fromIsland
+            return alterBaseRate(island)
+        } else if (step === 4) {
 
-    function handleKeydown(e: KeyboardEvent) {
-        if (e.key === "Enter") {
-            e.preventDefault(); // avoid submitting forms or unwanted behavior
-            nextStep();
         }
+        return false;
     }
 
 

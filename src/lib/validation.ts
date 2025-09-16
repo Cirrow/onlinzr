@@ -1,17 +1,14 @@
 // boolean functions to validate the user inputs, and setting the global variables
+// these functions require ARGUMENTS as they should be independently tested in an EXTERNAL environemnt like vitest - they will not have access to global variables.
 
-import { errorMessage, userFirstName, boxDim, boxVol, type ReturnPackage } from "../store";
-import { calculateBaseRate, displayError } from "$lib/helper";
+import { errorMessage, userFirstName, boxDim, boxVol, fromIsland, type ReturnPackage, baseRate, type Islands } from "../store";
+import { calculateBaseRate, calculateVolume, displayError } from "$lib/helper";
+import { get } from "svelte/store";
 
 export function capitaliseFirstLetter(name: string): boolean {
     let str = name
     
     const trimmed = str.trim();
-
-    if (!str) {
-        errorMessage.set(displayError('Unexpected error: variable `str` is undefined.'));
-        return false;
-    }
 
     if (trimmed === '') {
         errorMessage.set(displayError('Please enter a name'));
@@ -55,18 +52,38 @@ export function validateDimensions({ height, width, depth }: ReturnPackage): boo
         [h, w, d] = [h, w, d].map(v => v.endsWith("cm") ? v.slice(0, -2) : v)
         const [hnum, wnum, dnum] = [h, w, d].map(Number)
 
-        if (hnum < 5 || wnum < 5 || dnum < 5) errorMessage.set(displayError('All dimensions must not be smaller than 5cm.'));
-        if (hnum > 100 || wnum > 100 || dnum > 100) errorMessage.set(displayError('All dimensions must not exceed 100cm.'));
+        if (hnum < 5 || wnum < 5 || dnum < 5) {
+            errorMessage.set(displayError('All dimensions must not be smaller than 5cm.'));
+            return false
+        }
+        if (hnum > 100 || wnum > 100 || dnum > 100) {
+            errorMessage.set(displayError('All dimensions must not exceed 100cm.'));
+            return false
+        }
 
 
-        const newDim: ReturnPackage = { height: h, width: w, depth: d };
-        boxDim.set(newDim);
+        boxDim.set({ height: h, width: w, depth: d });
+        
+        baseRate.set(calculateBaseRate(hnum, wnum, dnum))
 
-        const volume = calculateBaseRate(hnum, wnum, dnum);
-        boxVol.set(volume); // set volume global storage
+        boxVol.set(calculateVolume(hnum, wnum, dnum)); // set volume global storage
 
         return true;
     }
 
     return false;
+}
+
+
+export function alterBaseRate(island: Islands): boolean {
+
+    if (island === "south") baseRate.update(n => n * 1.5) // multiply base rate by 1.5
+    if (island === "stewart") baseRate.update(n => n * 2) // multiply base rate by 2
+
+    return true
+}
+
+export function validateFullInfo() {
+
+
 }
