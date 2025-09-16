@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { userFirstName } from "../store";
+  import { userFirstName } from "../../store";
 </script>
 
 <div id="innerinputdiv" class="flex flex-col items-center">
