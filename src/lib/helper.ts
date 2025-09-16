@@ -1,4 +1,4 @@
-// helper methods to be used throughout components
+// helper methods to be used throughout components - these functions must NOT set global variables!
 export function displayError(message: string) {
     let errorMessage: string
     return errorMessage = message
