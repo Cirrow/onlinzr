@@ -13,6 +13,10 @@ export interface ReturnPackage {
     depth: string,
 }
 
-
 export const boxDim = writable<ReturnPackage>({ height: "", width: "", depth: "" })
 export const boxVol = writable(0)
+
+
+export type Islands = "north" | "south" | "stewart"
+
+export const fromIsland = writable<Islands>()
