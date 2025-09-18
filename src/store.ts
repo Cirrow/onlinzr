@@ -45,3 +45,11 @@ export const customerFullDetails = writable<FullDetail>({
     telephone: "",
     costForReturn: 0
 })
+
+// Keep firstName in sync with userFirstName
+userFirstName.subscribe(firstName => {
+  customerFullDetails.update(details => ({
+    ...details,
+    firstName: firstName
+  }))
+})
