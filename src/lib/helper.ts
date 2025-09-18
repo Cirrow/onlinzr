@@ -1,8 +1,5 @@
 // helper methods to be used throughout components - these functions must NOT set global variables!
-export function displayError(message: string) {
-    let errorMessage: string
-    return errorMessage = message
-}
+
 export function handleKeydown( event: KeyboardEvent, key: string, fnToRun: (() => void) | ((val: string) => void), value?: string ) {
     
     if (event.key === key) {
