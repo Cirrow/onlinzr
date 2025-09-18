@@ -1,7 +1,7 @@
 // boolean functions to validate the user inputs, and setting the global variables
 // these functions require ARGUMENTS as they should be independently tested in an EXTERNAL environemnt like vitest - they will not have access to global variables.
 
-import { errorMessage, userFirstName, boxDim, boxVol, fromIsland, type ReturnPackage, baseRate, type Islands } from "../store";
+import { errorMessage, userFirstName, boxDim, boxVol, fromIsland, type ReturnPackage, baseRate, type Islands, customerFullDetails, type Address } from "../store";
 import { calculateBaseRate, calculateVolume, displayError } from "$lib/helper";
 import { get } from "svelte/store";
 
@@ -83,7 +83,54 @@ export function alterBaseRate(island: Islands): boolean {
     return true
 }
 
-export function validateFullInfo() {
+export function capitaliseAllLastName(name: string): boolean {
+    let str = name
+    
+    const trimmed = str.trim();
+
+    if (trimmed === '') {
+        errorMessage.set(displayError('Please enter a name'));
+        return false;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(trimmed)) {
+        errorMessage.set(displayError('Name should only contain letters and spaces.'));
+        return false;
+    }
+
+
+    const capitalised = trimmed.toUpperCase();
+    customerFullDetails.update(details => ({
+        ...details,
+        lastName: capitalised
+    }))
+
+    // clear old error if successful
+    errorMessage.set('');
+    return true;
+}
+
+export function verifyTelephone(telephone: string) {
+    telephone = telephone.replace(" ", "")
+    telephone = telephone.replace("-", "")
+
+    if (/[^0-9]/.test(telephone)) {
+        errorMessage.set(displayError("Telephone number ontains non-numeric characters."))
+    }
+}
+
+export function validateAddress({street, city, region, postal}: Address) {
+
+    if (!/\d/.test(street)) {
+        errorMessage.set(displayError(""))
+    }
+
+}
+
+export function validateFullInfo(lastName: string): boolean {
+
+    if (!capitaliseAllLastName(lastName)) return false;
+
 
 
 }
