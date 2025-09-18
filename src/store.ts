@@ -53,3 +53,10 @@ userFirstName.subscribe(firstName => {
     firstName: firstName
   }))
 })
+
+baseRate.subscribe(rate => {
+    customerFullDetails.update(details => ({
+        ...details,
+        costForReturn: rate
+    }))
+})
