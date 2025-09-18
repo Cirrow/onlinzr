@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { errorMessage, boxDim, userFirstName, fromIsland } from "../store";
-    import { alterBaseRate, capitaliseFirstLetter, validateDimensions } from "$lib/validation";
+    import { errorMessage, boxDim, userFirstName, fromIsland, customerFullDetails } from "../store";
+    import { alterBaseRate, capitaliseFirstLetter, validateDimensions, validateFullInfo } from "$lib/validation";
 
     import ErrorDiv from "../components/ErrorDiv.svelte";
 
@@ -24,6 +24,10 @@
         if (currentStep < totalSteps && canProceed(currentStep)) {
             errorMessage.set("")
             currentStep++;
+        }
+        if (currentStep === totalSteps) {
+            canProceed(currentStep)
+            return
         }
     }
 
@@ -54,7 +58,8 @@
             const island = $fromIsland
             return alterBaseRate(island)
         } else if (step === 4) {
-
+            const fullDetails = $customerFullDetails
+            return validateFullInfo(fullDetails)
         }
         return false;
     }

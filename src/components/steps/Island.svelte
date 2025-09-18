@@ -7,7 +7,7 @@
         [ "stewart", "Stewart Island (Rakiura)"     ]
     ] // short name followed by a longer, full name
 
-    let currentSelection: Islands = $state("north"); // default value
+    let currentSelection: Islands = $state("north"); // reactive default value
 
     $effect.pre(() => {
         $fromIsland = currentSelection
