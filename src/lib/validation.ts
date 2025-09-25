@@ -1,7 +1,7 @@
 // boolean functions to validate the user inputs, and setting the global variables
 // these functions require ARGUMENTS as they should be independently tested in an EXTERNAL environemnt like vitest - they will not have access to global variables.
 
-import { errorMessage, userFirstName, boxDim, boxVol, fromIsland, type ReturnPackage, baseRate, type Islands, customerFullDetails, type Address, type FullDetail } from "../store";
+import { errorMessage, userFirstName, boxDim, boxVol, type ReturnPackage, baseRate, type Islands, customerFullDetails, type Address, type FullDetail } from "../store";
 import { calculateBaseRate, calculateVolume } from "$lib/helper";
 import { get } from "svelte/store";
 
@@ -125,7 +125,6 @@ export function validateAddress({street, city, region, postal}: Address): boolea
 
     if (!/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z0-9\s]+$/.test(street)) {
         errorMessage.set(("Street does not include a house number, and/or is malformed."))
-        console.log(street)
         return false
     }
 
@@ -144,10 +143,15 @@ export function validateAddress({street, city, region, postal}: Address): boolea
         return false
     }
 
-    street = street.toUpperCase()
-    city = city.toUpperCase()
-    region = region.toUpperCase()
-
+    customerFullDetails.update(d => ({
+        ...d,
+        address: {
+            ...d.address,
+            street: street.toUpperCase(),
+            city: city.toUpperCase(),
+            region: region.toUpperCase()
+        }
+    }))
     return true
 }
 
