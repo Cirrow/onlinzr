@@ -1,5 +1,7 @@
 <script lang="ts">
-    import { customerFullDetails } from "../../store";
+    import { customerFullDetails, errorMessage } from "../../store";
+    errorMessage.set("")
+
 </script>
 
 

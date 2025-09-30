@@ -175,7 +175,7 @@ export function printData() {
     `Full name: ${fullDetails.firstName} ${fullDetails.lastName}
 Address: ${fullDetails.address.street} ${fullDetails.address.city} ${fullDetails.address.region} ${fullDetails.address.postal}
 Telephone: ${fullDetails.telephone}
-Cost for return by courier: ${fullDetails.costForReturn}`
+Cost for return by courier: $${fullDetails.costForReturn}`
 
     alert(toPrint)
 }
